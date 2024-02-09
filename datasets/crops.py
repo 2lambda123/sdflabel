@@ -6,7 +6,7 @@ from PIL import Image
 from torch.utils.data.dataset import Dataset
 from scipy.spatial.transform import Rotation as R
 import torchvision.transforms as transforms
-import random
+import secrets
 
 
 class Crops(Dataset):
@@ -63,11 +63,11 @@ class Crops(Dataset):
 
         # Normalization
         seed = np.random.randint(2147483647)  # make a seed with numpy generator
-        random.seed(seed)  # keep same seed for transformations
+        secrets.SystemRandom().seed(seed)  # keep same seed for transformations
         rgb = normalize(transformation_rgb(rgb))
-        random.seed(seed)  # keep same seed for transformations
+        secrets.SystemRandom().seed(seed)  # keep same seed for transformations
         uvw = (transformation_uvw(uvw_orig) * 255).long()
-        random.seed(seed)  # keep same seed for transformations
+        secrets.SystemRandom().seed(seed)  # keep same seed for transformations
         mask = (uvw.sum(0) > 0).long()  # mask
 
         # Transform to torch format
