@@ -11,6 +11,16 @@ import secrets
 
 class Crops(Dataset):
     def __init__(self, path):
+        """Initializes the class instance with the given path.
+        Parameters:
+            - path (str): Path to the directory containing the crops.json file.
+        Returns:
+            - None: This function does not return anything.
+        Processing Logic:
+            - Initialize class instance with path.
+            - Open and load crops.json file.
+            - Assign the loaded data to self.gt."""
+        
 
         # Parse the GT file
         self.path = path
@@ -18,9 +28,33 @@ class Crops(Dataset):
             self.gt = json.load(f)
 
     def __len__(self):
+        """"Returns the length of the input parameter, self.gt."
+        Parameters:
+            - self (object): The input parameter.
+        Returns:
+            - int: The length of self.gt.
+        Processing Logic:
+            - Get the length of self.gt.
+            - Return the length."""
+        
         return len(self.gt)
 
     def __getitem__(self, idx):
+        """This function is used to retrieve a sample from a dataset given its index. It reads the image and depth map associated with the given index, applies random transformations and color jitter, and returns the transformed data in a dictionary format.
+        Parameters:
+            - idx (int): Index of the sample to retrieve.
+        Returns:
+            - sample (dict): A dictionary containing the transformed RGB image, UVW map, mask, latent vector, crop size, camera intrinsics, and pose.
+        Processing Logic:
+            - Get the sample data associated with the given index.
+            - Read the RGB image and UVW map.
+            - Get the latent vector and pose from the sample data.
+            - Get the camera intrinsics from the sample data.
+            - Apply random transformations and color jitter to the RGB image.
+            - Normalize the RGB image and transform it to torch format.
+            - Transform the UVW map to torch format and create a mask.
+            - Store the transformed data in a dictionary and return it."""
+        
 
         # Get sample data
         gt_sample = self.gt[str(idx)][0]
